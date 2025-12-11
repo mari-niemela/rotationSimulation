@@ -1,0 +1,16 @@
+// DIMENSIONS
+dim_r0	0.050; // radius of inner cylinder
+dim_r1	0.150; // radius of outer cylinder
+
+// NUMBER OF CELLS AND GRADING
+Nradius	18;    // number of cells along radius
+Ntheta	18;    // number of cells along theta
+Gwalls	3;     // grading at the walls
+
+// MATERIAL PROPERTIES
+data_rho 1000; // density
+data_nu	 1e-6; // kinematic viscosity
+
+// ANGULAR FREQUENCY
+
+data_omega 0.020;

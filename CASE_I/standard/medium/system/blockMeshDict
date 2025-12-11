@@ -1,0 +1,233 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2306                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+scale   1;
+
+# include "parameters"
+
+// movingZone
+R0	$dim_r0;
+R1	$dim_ros;
+
+// background
+R2	#eval{ 0.6*$dim_r0 };
+R3	$dim_r1;	
+
+// thickness
+z0	-0.5;
+z1	 0.5;
+
+vertices
+(
+//  movingZone coordinates
+    ( $R0  0   $z0) // 0
+    ( $R0  0   $z1) // 1
+    ( 0    $R0 $z0) // 2
+    ( 0    $R0 $z1) // 3
+    (-$R0  0   $z0) // 4
+    (-$R0  0   $z1) // 5
+    (0    -$R0 $z0) // 6
+    (0    -$R0 $z1) // 7
+    ( $R1  0   $z0) // 8
+    ( $R1  0   $z1) // 9
+    ( 0    $R1 $z0) // 10
+    ( 0    $R1 $z1) // 11
+    (-$R1  0   $z0) // 12
+    (-$R1  0   $z1) // 13
+    (0    -$R1 $z0) // 14
+    (0    -$R1 $z1) // 15
+
+//  background coordinates
+    ( $R2  0   $z0) // 16
+    ( $R2  0   $z1) // 17
+    ( 0    $R2 $z0) // 18
+    ( 0    $R2 $z1) // 19
+    (-$R2  0   $z0) // 20
+    (-$R2  0   $z1) // 21
+    (0    -$R2 $z0) // 22
+    (0    -$R2 $z1) // 23
+    ( $R0  0   $z0) // 24
+    ( $R0  0   $z1) // 25
+    ( 0    $R0 $z0) // 26
+    ( 0    $R0 $z1) // 27
+    (-$R0  0   $z0) // 28
+    (-$R0  0   $z1) // 29
+    (0    -$R0 $z0) // 30
+    (0    -$R0 $z1) // 31
+    ( $R1  0   $z0) // 32
+    ( $R1  0   $z1) // 33
+    ( 0    $R1 $z0) // 34
+    ( 0    $R1 $z1) // 35
+    (-$R1  0   $z0) // 36
+    (-$R1  0   $z1) // 37
+    (0    -$R1 $z0) // 38
+    (0    -$R1 $z1) // 39
+    ( $R3  0   $z0) // 40
+    ( $R3  0   $z1) // 41
+    ( 0    $R3 $z0) // 42
+    ( 0    $R3 $z1) // 43
+    (-$R3  0   $z0) // 44
+    (-$R3  0   $z1) // 45
+    (0    -$R3 $z0) // 46
+    (0    -$R3 $z1) // 47
+
+);
+
+blocks
+(
+    hex (0 8  10 2 1 9  11 3) movingZone ($Nimp1 $Nimp2 1) simpleGrading ($Gimp 1 1)
+    hex (2 10 12 4 3 11 13 5) movingZone ($Nimp1 $Nimp2 1) simpleGrading ($Gimp 1 1)
+    hex (4 12 14 6 5 13 15 7) movingZone ($Nimp1 $Nimp2 1) simpleGrading ($Gimp 1 1)
+    hex (6 14 8  0 7 15 9  1) movingZone ($Nimp1 $Nimp2 1) simpleGrading ($Gimp 1 1)
+ 
+    hex (16 18 20 22 17 19 21 23) background ($Ntank1 $Ntank1 1) simpleGrading (1 1 1) // middle
+    
+    hex (16 24 26 18 17 25 27 19) background (4 $Ntank1 1) simpleGrading (1 1 1)
+    hex (18 26 28 20 19 27 29 21) background (4 $Ntank1 1) simpleGrading (1 1 1)
+    hex (20 28 30 22 21 29 31 23) background (4 $Ntank1 1) simpleGrading (1 1 1)
+    hex (22 30 24 16 23 31 25 17) background (4 $Ntank1 1) simpleGrading (1 1 1)
+    
+    hex (24 32 34 26 25 33 35 27) background ($Nimp1 $Nimp2 1) simpleGrading ($Gimp 1 1)
+    hex (26 34 36 28 27 35 37 29) background ($Nimp1 $Nimp2 1) simpleGrading ($Gimp 1 1)
+    hex (28 36 38 30 29 37 39 31) background ($Nimp1 $Nimp2 1) simpleGrading ($Gimp 1 1)
+    hex (30 38 32 24 31 39 33 25) background ($Nimp1 $Nimp2 1) simpleGrading ($Gimp 1 1)
+    
+    hex (32 40 42 34 33 41 43 35) background ($Ntank2 $Ntank1 1) simpleGrading ($Gtank 1 1)
+    hex (34 42 44 36 35 43 45 37) background ($Ntank2 $Ntank1 1) simpleGrading ($Gtank 1 1)
+    hex (36 44 46 38 37 45 47 39) background ($Ntank2 $Ntank1 1) simpleGrading ($Gtank 1 1)
+    hex (38 46 40 32 39 47 41 33) background ($Ntank2 $Ntank1 1) simpleGrading ($Gtank 1 1)
+
+);
+
+edges
+(
+    // movingZone - hole edge
+    arc 0 2  origin (0 0 $z0)
+    arc 1 3  origin (0 0 $z1)
+    arc 2 4  origin (0 0 $z0)
+    arc 3 5  origin (0 0 $z1)
+    arc 4 6  origin (0 0 $z0)
+    arc 5 7  origin (0 0 $z1)
+    arc 6 0  origin (0 0 $z0)
+    arc 7 1  origin (0 0 $z1)
+
+    // movingZone - overset edge 
+    arc 8 10  origin (0 0 $z0)
+    arc 9 11  origin (0 0 $z1)
+    arc 10 12 origin (0 0 $z0)
+    arc 11 13 origin (0 0 $z1)
+    arc 12 14 origin (0 0 $z0)
+    arc 13 15 origin (0 0 $z1)
+    arc 14 8  origin (0 0 $z0)
+    arc 15 9  origin (0 0 $z1)
+   
+    // background - hole edge 
+    arc 24 26 origin (0 0 $z0)
+    arc 25 27 origin (0 0 $z1)
+    arc 26 28 origin (0 0 $z0)
+    arc 27 29 origin (0 0 $z1)
+    arc 28 30 origin (0 0 $z0)
+    arc 29 31 origin (0 0 $z1)
+    arc 30 24 origin (0 0 $z0)
+    arc 31 25 origin (0 0 $z1)
+    
+    // background - overset edge 
+    arc 32 34 origin (0 0 $z0)
+    arc 33 35 origin (0 0 $z1)
+    arc 34 36 origin (0 0 $z0)
+    arc 35 37 origin (0 0 $z1)
+    arc 36 38 origin (0 0 $z0)
+    arc 37 39 origin (0 0 $z1)
+    arc 38 32 origin (0 0 $z0)
+    arc 39 33 origin (0 0 $z1)
+    
+    // background - outer edge 
+    arc 40 42 origin (0 0 $z0)
+    arc 41 43 origin (0 0 $z1)
+    arc 42 44 origin (0 0 $z0)
+    arc 43 45 origin (0 0 $z1)
+    arc 44 46 origin (0 0 $z0)
+    arc 45 47 origin (0 0 $z1)
+    arc 46 40 origin (0 0 $z0)
+    arc 47 41 origin (0 0 $z1)
+
+);
+
+
+boundary
+(
+    oversetFaces
+    {
+        type overset;
+        faces
+        (
+            (8 10 11 9)
+            (10 12 13 11)
+            (12 14 15 13)
+            (14 8 9 15)
+            
+        );
+    }
+    
+    hole
+    {
+        type wall;
+        faces (
+             (2 0 1 3)
+             (4 2 3 5)
+             (6 4 5 7)
+             (0 6 7 1)
+
+        );
+    }
+
+    walls
+    {
+        type wall;
+        faces
+        (
+            (40 42 43 41)
+            (42 44 45 43)
+            (44 46 47 45)
+            (46 40 41 47)
+        );
+    }
+   
+    frontAndBack
+    {
+        type empty;
+        faces
+        (
+            // movingZone
+            (0 2 10 8)(2 4 12 10)(4 6 14 12)(6 0 8 14)// back
+            (1 9 11 3)(3 11 13 5)(5 13 15 7)(7 15 9 1) // front
+
+            //background
+            (16 22 20 18) // back
+            (16 18 26 24)(18 20 28 26)(20 22 30 28)(22 16 24 30)
+            (24 26 34 32)(26 28 36 34)(28 30 38 36)(30 24 32 38)
+            (32 34 42 40)(34 36 44 42)(36 38 46 44)(38 32 40 46)
+            (17 19 21 23) // front
+            (17 25 27 19)(19 27 29 21)(21 29 31 23)(23 31 25 17)
+            (25 33 35 27)(27 35 37 29)(29 37 39 31)(31 39 33 25)
+            (33 41 43 35)(35 43 45 37)(37 45 47 39)(39 47 41 33)
+        );
+    }
+    
+);
+
+
+// ************************************************************************* //

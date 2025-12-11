@@ -1,0 +1,20 @@
+#!/bin/sh
+cd "${0%/*}" || exit                                # Run from this directory
+. ${WM_PROJECT_DIR:?}/bin/tools/RunFunctions        # Tutorial run functions
+#------------------------------------------------------------------------------
+
+runApplication blockMesh
+
+# Select cellSets
+runApplication topoSet
+
+# Create initial conditions
+restore0Dir
+
+# Use cellSets to write zoneID
+runApplication setFields
+
+# Check mesh
+checkMesh > log.meshCheck
+
+#------------------------------------------------------------------------------

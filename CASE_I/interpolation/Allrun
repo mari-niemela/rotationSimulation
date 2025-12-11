@@ -1,0 +1,25 @@
+#!/bin/sh
+cd "${0%/*}" || exit                                # Run from this directory
+. ${WM_PROJECT_DIR:?}/bin/tools/RunFunctions        # Tutorial run functions
+#------------------------------------------------------------------------------
+
+# create
+./Allrun.pre
+
+# calculate
+overPimpleDyMFoam > log.overPimpleDyMFoam
+
+# postprocessing
+topoSet -dict system/topoSetDict_BG
+subsetMesh BG_active -resultTime 40101
+postProcess -func singleGraph -latestTime
+mv postProcessing/singleGraph/40101/line_p_U_U\:Transformed.xy postProcessing/singleGraph/40101/background.xy
+rm -r 40101
+
+topoSet -dict system/topoSetDict_OS
+subsetMesh OS_active -resultTime 40101
+postProcess -func singleGraph -latestTime
+mv postProcessing/singleGraph/40101/line_p_U_U\:Transformed.xy postProcessing/singleGraph/40101/overset.xy
+rm -r 40101
+
+#------------------------------------------------------------------------------
