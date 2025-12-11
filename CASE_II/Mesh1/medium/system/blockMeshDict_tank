@@ -1,0 +1,125 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2306                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+scale   1;
+
+# include "parameters"
+
+// dimensions
+
+x0	#eval "$dim_H/2";
+x1	#eval "$dim_T/2*0.70711";
+y0	#eval "$dim_H/2";
+y1	#eval "$dim_T/2*0.70711";
+negx0 	#eval "-1*$x0";
+negx1 	#eval "-1*$x1";
+negy0 	#eval "-1*$y0";
+negy1 	#eval "-1*$y1";
+
+z0	-0.5;
+z1	0.5;
+
+negT	#eval "-1*$dim_T";
+
+vertices
+(
+    ($negx0 $negy0 $z0) // 0
+    ($negx0 $negy0 $z1) // 1
+    ($x0    $negy0 $z0) // 2
+    ($x0    $negy0 $z1) // 3
+    ($x0    $y0    $z0) // 4
+    ($x0    $y0    $z1) // 5
+    ($negx0 $y0    $z0) // 6
+    ($negx0 $y0    $z1) // 7
+    
+    
+    ($negx1 $negy1 $z0) // 8
+    ($negx1 $negy1 $z1) // 9
+    ($x1    $negy1 $z0) // 10
+    ($x1    $negy1 $z1) // 11
+    ($x1    $y1    $z0) // 12
+    ($x1    $y1    $z1) // 13
+    ($negx1 $y1    $z0) // 14
+    ($negx1 $y1    $z1) // 15
+   
+);
+
+blocks
+(
+
+    hex (0 2 4 6 1 3 5 7)         fluid ($Nsquare $Nsquare 1) simpleGrading (1 1 1) // 0 square
+    
+    hex (0 8  10 2 1 9  11 3)     fluid ($Ntank1  $Nsquare 1) simpleGrading ($tGrad1 1 1) // 0 outer blocks
+    hex (2 10 12 4 3 11 13 5)     fluid ($Ntank1  $Nsquare 1) simpleGrading ($tGrad1 1 1) // 0 
+    hex (4 12 14 6 5 13 15 7)     fluid ($Ntank1  $Nsquare 1) simpleGrading ($tGrad1 1 1) // 0 
+    hex (6 14  8 0 7 15 9  1)     fluid ($Ntank1  $Nsquare 1) simpleGrading ($tGrad1 1 1) // 0 
+ 
+);
+
+edges
+(
+    arc 8  10  origin (0 0 $z0)
+    arc 9  11  origin (0 0 $z1)
+    arc 10 12  origin (0 0 $z0)
+    arc 11 13  origin (0 0 $z1)
+    arc 12 14  origin (0 0 $z0)
+    arc 13 15  origin (0 0 $z1)
+    arc 14 8   origin (0 0 $z0)
+    arc 15 9   origin (0 0 $z1)
+    
+    arc 0  2   origin (0 $dim_T $z0)
+    arc 1  3   origin (0 $dim_T $z1)
+    arc 2  4   origin (0 $negT  $z0)
+    arc 3  5   origin (0 $negT  $z1)
+    arc 4  6   origin (0 $negT $z0)
+    arc 5  7   origin (0 $negT $z1)
+    arc 6  0   origin (0 $dim_T  $z0)
+    arc 7  1   origin (0 $dim_T $z1)
+);
+
+defaultPatch
+{
+    name frontAndBack;
+    type empty;
+}
+
+boundary
+(
+
+    oversetFaces_impeller1
+    {
+        type overset;
+        faces ();
+    }
+    
+    oversetFaces_impeller2
+    {
+        type overset;
+        faces ();
+    }
+
+    walls
+    {
+        type wall;
+        faces
+        (
+            (8 10 11 9)(10 12 13 11)(12 14 15 13)(14 8 9 15)
+        );
+    }
+
+);
+
+// ************************************************************************* //

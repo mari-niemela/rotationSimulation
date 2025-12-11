@@ -1,0 +1,637 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2306                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+scale   1;
+
+/* These parameters are defined in parameters-file
+
+dim_T	// tank diameter
+dim_D	// impeller diameter = dim_T/3
+dim_OS	// overset diameter, original 0.040
+
+Nbet	// between blades
+Nblade	// along blades
+Nos	// overset mesh
+Ntip	// blade tips
+
+iGrad1	// impeller - between blades
+iGrad2  // impeller - along blades
+iGrad3  // impeller - outer blocks
+
+*/
+
+# include "parameters"
+
+N1  $iN1;
+N2  $iN2;
+N3  $iN3;
+N4  $iN4;
+N5  $iN5;
+N6  $iN6;
+
+// dimensions
+
+dim_t	#eval "$dim_T/100";
+
+// parameters
+
+R0	#eval "$dim_D/2 - $dim_D/4";
+R1	#eval "$R0 + $gap";
+R2	#eval "$dim_D/2";
+R3	#eval "$dim_D/2 + $top";
+
+alpha1	degToRad(0);
+alpha2	degToRad(60);
+alpha3	degToRad(120);
+alpha4	degToRad(180);
+alpha5	degToRad(240);
+alpha6	degToRad(300);
+
+delta0  #eval "asin((0.5*$dim_t + $top)/$R0)";
+delta1	#eval "asin((0.5*$dim_t + $gap)/$R1)"; // outer
+delta2	#eval "asin((0.5*$dim_t + $gap)/$R2)"; // outer
+delta3	#eval "asin((0.5*$dim_t + $top)/$R3)"; // outer
+delta7	#eval "asin(0.5*$dim_t/$R0)"; // inner
+delta4	#eval "asin(0.5*$dim_t/$R1)"; // inner
+delta5	#eval "asin(0.5*$dim_t/$R2)"; // inner
+delta6	#eval "asin(0.5*$dim_t/$R3)"; // inner
+
+// coordinates
+x0	#eval "$R0*cos($alpha1 - $delta0)"; // blade 1
+x1	#eval "$R0*cos($alpha1 - $delta7)";
+x2	#eval "$R0*cos($alpha1 + $delta7)";
+x3	#eval "$R0*cos($alpha1 + $delta0)";
+x4	#eval "$R1*cos($alpha1 - $delta1)";
+x5	#eval "$R1*cos($alpha1 - $delta4)";
+x6	#eval "$R1*cos($alpha1 + $delta4)";
+x7	#eval "$R1*cos($alpha1 + $delta1)";
+x8	#eval "$R2*cos($alpha1 - $delta2)";
+x9	#eval "$R2*cos($alpha1 - $delta5)";
+x10	#eval "$R2*cos($alpha1 + $delta5)";
+x11	#eval "$R2*cos($alpha1 + $delta2)";
+x12	#eval "$R3*cos($alpha1 - $delta3)";
+x13	#eval "$R3*cos($alpha1 - $delta6)";
+x14	#eval "$R3*cos($alpha1 + $delta6)";
+x15	#eval "$R3*cos($alpha1 + $delta3)";
+x16	#eval "$R0*cos($alpha2 - $delta0)"; // blade 2
+x17	#eval "$R0*cos($alpha2 - $delta7)";
+x18	#eval "$R0*cos($alpha2 + $delta7)";
+x19	#eval "$R0*cos($alpha2 + $delta0)";
+x20	#eval "$R1*cos($alpha2 - $delta1)";
+x21	#eval "$R1*cos($alpha2 - $delta4)";
+x22	#eval "$R1*cos($alpha2 + $delta4)";
+x23	#eval "$R1*cos($alpha2 + $delta1)";
+x24	#eval "$R2*cos($alpha2 - $delta2)";
+x25	#eval "$R2*cos($alpha2 - $delta5)";
+x26	#eval "$R2*cos($alpha2 + $delta5)";
+x27	#eval "$R2*cos($alpha2 + $delta2)";
+x28	#eval "$R3*cos($alpha2 - $delta3)";
+x29	#eval "$R3*cos($alpha2 - $delta6)";
+x30	#eval "$R3*cos($alpha2 + $delta6)";
+x31	#eval "$R3*cos($alpha2 + $delta3)";
+x32	#eval "$R0*cos($alpha3 - $delta0)"; // blade 3
+x33	#eval "$R0*cos($alpha3 - $delta7)";
+x34	#eval "$R0*cos($alpha3 + $delta7)";
+x35	#eval "$R0*cos($alpha3 + $delta0)";
+x36	#eval "$R1*cos($alpha3 - $delta1)";
+x37	#eval "$R1*cos($alpha3 - $delta4)";
+x38	#eval "$R1*cos($alpha3 + $delta4)";
+x39	#eval "$R1*cos($alpha3 + $delta1)";
+x40	#eval "$R2*cos($alpha3 - $delta2)";
+x41	#eval "$R2*cos($alpha3 - $delta5)";
+x42	#eval "$R2*cos($alpha3 + $delta5)";
+x43	#eval "$R2*cos($alpha3 + $delta2)";
+x44	#eval "$R3*cos($alpha3 - $delta3)";
+x45	#eval "$R3*cos($alpha3 - $delta6)";
+x46	#eval "$R3*cos($alpha3 + $delta6)";
+x47	#eval "$R3*cos($alpha3 + $delta3)";
+x48	#eval "$R0*cos($alpha4 - $delta0)"; // blade 4
+x49	#eval "$R0*cos($alpha4 - $delta7)";
+x50	#eval "$R0*cos($alpha4 + $delta7)";
+x51	#eval "$R0*cos($alpha4 + $delta0)";
+x52	#eval "$R1*cos($alpha4 - $delta1)";
+x53	#eval "$R1*cos($alpha4 - $delta4)";
+x54	#eval "$R1*cos($alpha4 + $delta4)";
+x55	#eval "$R1*cos($alpha4 + $delta1)";
+x56	#eval "$R2*cos($alpha4 - $delta2)";
+x57	#eval "$R2*cos($alpha4 - $delta5)";
+x58	#eval "$R2*cos($alpha4 + $delta5)";
+x59	#eval "$R2*cos($alpha4 + $delta2)";
+x60	#eval "$R3*cos($alpha4 - $delta3)";
+x61	#eval "$R3*cos($alpha4 - $delta6)";
+x62	#eval "$R3*cos($alpha4 + $delta6)";
+x63	#eval "$R3*cos($alpha4 + $delta3)";
+x64	#eval "$R0*cos($alpha5 - $delta0)"; // blade 5
+x65	#eval "$R0*cos($alpha5 - $delta7)";
+x66	#eval "$R0*cos($alpha5 + $delta7)";
+x67	#eval "$R0*cos($alpha5 + $delta0)";
+x68	#eval "$R1*cos($alpha5 - $delta1)";
+x69	#eval "$R1*cos($alpha5 - $delta4)";
+x70	#eval "$R1*cos($alpha5 + $delta4)";
+x71	#eval "$R1*cos($alpha5 + $delta1)";
+x72	#eval "$R2*cos($alpha5 - $delta2)";
+x73	#eval "$R2*cos($alpha5 - $delta5)";
+x74	#eval "$R2*cos($alpha5 + $delta5)";
+x75	#eval "$R2*cos($alpha5 + $delta2)";
+x76	#eval "$R3*cos($alpha5 - $delta3)";
+x77	#eval "$R3*cos($alpha5 - $delta6)";
+x78	#eval "$R3*cos($alpha5 + $delta6)";
+x79	#eval "$R3*cos($alpha5 + $delta3)";
+x80	#eval "$R0*cos($alpha6 - $delta0)"; // blade 6
+x81	#eval "$R0*cos($alpha6 - $delta7)";
+x82	#eval "$R0*cos($alpha6 + $delta7)";
+x83	#eval "$R0*cos($alpha6 + $delta0)";
+x84	#eval "$R1*cos($alpha6 - $delta1)";
+x85	#eval "$R1*cos($alpha6 - $delta4)";
+x86	#eval "$R1*cos($alpha6 + $delta4)";
+x87	#eval "$R1*cos($alpha6 + $delta1)";
+x88	#eval "$R2*cos($alpha6 - $delta2)";
+x89	#eval "$R2*cos($alpha6 - $delta5)";
+x90	#eval "$R2*cos($alpha6 + $delta5)";
+x91	#eval "$R2*cos($alpha6 + $delta2)";
+x92	#eval "$R3*cos($alpha6 - $delta3)";
+x93	#eval "$R3*cos($alpha6 - $delta6)";
+x94	#eval "$R3*cos($alpha6 + $delta6)";
+x95	#eval "$R3*cos($alpha6 + $delta3)";
+
+y0	#eval "$R0*sin($alpha1 - $delta0)"; // blade 1
+y1	#eval "$R0*sin($alpha1 - $delta7)";
+y2	#eval "$R0*sin($alpha1 + $delta7)";
+y3	#eval "$R0*sin($alpha1 + $delta0)";
+y4	#eval "$R1*sin($alpha1 - $delta1)";
+y5	#eval "$R1*sin($alpha1 - $delta4)";
+y6	#eval "$R1*sin($alpha1 + $delta4)";
+y7	#eval "$R1*sin($alpha1 + $delta1)";
+y8	#eval "$R2*sin($alpha1 - $delta2)";
+y9	#eval "$R2*sin($alpha1 - $delta5)";
+y10	#eval "$R2*sin($alpha1 + $delta5)";
+y11	#eval "$R2*sin($alpha1 + $delta2)";
+y12	#eval "$R3*sin($alpha1 - $delta3)";
+y13	#eval "$R3*sin($alpha1 - $delta6)";
+y14	#eval "$R3*sin($alpha1 + $delta6)";
+y15	#eval "$R3*sin($alpha1 + $delta3)";
+y16	#eval "$R0*sin($alpha2 - $delta0)"; // blade 2
+y17	#eval "$R0*sin($alpha2 - $delta7)";
+y18	#eval "$R0*sin($alpha2 + $delta7)";
+y19	#eval "$R0*sin($alpha2 + $delta0)";
+y20	#eval "$R1*sin($alpha2 - $delta1)";
+y21	#eval "$R1*sin($alpha2 - $delta4)";
+y22	#eval "$R1*sin($alpha2 + $delta4)";
+y23	#eval "$R1*sin($alpha2 + $delta1)";
+y24	#eval "$R2*sin($alpha2 - $delta2)";
+y25	#eval "$R2*sin($alpha2 - $delta5)";
+y26	#eval "$R2*sin($alpha2 + $delta5)";
+y27	#eval "$R2*sin($alpha2 + $delta2)";
+y28	#eval "$R3*sin($alpha2 - $delta3)";
+y29	#eval "$R3*sin($alpha2 - $delta6)";
+y30	#eval "$R3*sin($alpha2 + $delta6)";
+y31	#eval "$R3*sin($alpha2 + $delta3)";
+y32	#eval "$R0*sin($alpha3 - $delta0)"; // blade 3
+y33	#eval "$R0*sin($alpha3 - $delta7)";
+y34	#eval "$R0*sin($alpha3 + $delta7)";
+y35	#eval "$R0*sin($alpha3 + $delta0)";
+y36	#eval "$R1*sin($alpha3 - $delta1)";
+y37	#eval "$R1*sin($alpha3 - $delta4)";
+y38	#eval "$R1*sin($alpha3 + $delta4)";
+y39	#eval "$R1*sin($alpha3 + $delta1)";
+y40	#eval "$R2*sin($alpha3 - $delta2)";
+y41	#eval "$R2*sin($alpha3 - $delta5)";
+y42	#eval "$R2*sin($alpha3 + $delta5)";
+y43	#eval "$R2*sin($alpha3 + $delta2)";
+y44	#eval "$R3*sin($alpha3 - $delta3)";
+y45	#eval "$R3*sin($alpha3 - $delta6)";
+y46	#eval "$R3*sin($alpha3 + $delta6)";
+y47	#eval "$R3*sin($alpha3 + $delta3)";
+y48	#eval "$R0*sin($alpha4 - $delta0)"; // blade 4
+y49	#eval "$R0*sin($alpha4 - $delta7)";
+y50	#eval "$R0*sin($alpha4 + $delta7)";
+y51	#eval "$R0*sin($alpha4 + $delta0)";
+y52	#eval "$R1*sin($alpha4 - $delta1)";
+y53	#eval "$R1*sin($alpha4 - $delta4)";
+y54	#eval "$R1*sin($alpha4 + $delta4)";
+y55	#eval "$R1*sin($alpha4 + $delta1)";
+y56	#eval "$R2*sin($alpha4 - $delta2)";
+y57	#eval "$R2*sin($alpha4 - $delta5)";
+y58	#eval "$R2*sin($alpha4 + $delta5)";
+y59	#eval "$R2*sin($alpha4 + $delta2)";
+y60	#eval "$R3*sin($alpha4 - $delta3)";
+y61	#eval "$R3*sin($alpha4 - $delta6)";
+y62	#eval "$R3*sin($alpha4 + $delta6)";
+y63	#eval "$R3*sin($alpha4 + $delta3)";
+y64	#eval "$R0*sin($alpha5 - $delta0)"; // blade 5
+y65	#eval "$R0*sin($alpha5 - $delta7)";
+y66	#eval "$R0*sin($alpha5 + $delta7)";
+y67	#eval "$R0*sin($alpha5 + $delta0)";
+y68	#eval "$R1*sin($alpha5 - $delta1)";
+y69	#eval "$R1*sin($alpha5 - $delta4)";
+y70	#eval "$R1*sin($alpha5 + $delta4)";
+y71	#eval "$R1*sin($alpha5 + $delta1)";
+y72	#eval "$R2*sin($alpha5 - $delta2)";
+y73	#eval "$R2*sin($alpha5 - $delta5)";
+y74	#eval "$R2*sin($alpha5 + $delta5)";
+y75	#eval "$R2*sin($alpha5 + $delta2)";
+y76	#eval "$R3*sin($alpha5 - $delta3)";
+y77	#eval "$R3*sin($alpha5 - $delta6)";
+y78	#eval "$R3*sin($alpha5 + $delta6)";
+y79	#eval "$R3*sin($alpha5 + $delta3)";
+y80	#eval "$R0*sin($alpha6 - $delta0)"; // blade 6
+y81	#eval "$R0*sin($alpha6 - $delta7)";
+y82	#eval "$R0*sin($alpha6 + $delta7)";
+y83	#eval "$R0*sin($alpha6 + $delta0)";
+y84	#eval "$R1*sin($alpha6 - $delta1)";
+y85	#eval "$R1*sin($alpha6 - $delta4)";
+y86	#eval "$R1*sin($alpha6 + $delta4)";
+y87	#eval "$R1*sin($alpha6 + $delta1)";
+y88	#eval "$R2*sin($alpha6 - $delta2)";
+y89	#eval "$R2*sin($alpha6 - $delta5)";
+y90	#eval "$R2*sin($alpha6 + $delta5)";
+y91	#eval "$R2*sin($alpha6 + $delta2)";
+y92	#eval "$R3*sin($alpha6 - $delta3)";
+y93	#eval "$R3*sin($alpha6 - $delta6)";
+y94	#eval "$R3*sin($alpha6 + $delta6)";
+y95	#eval "$R3*sin($alpha6 + $delta3)";
+
+z0	-0.5;
+z1	0.5;
+
+vertices
+(
+    ($x0 $y0 $z0) // 0	middle
+    ($x0 $y0 $z1) // 1
+    ($x1 $y1 $z0) // 2
+    ($x1 $y1 $z1) // 3
+    ($x2 $y2 $z0) // 4
+    ($x2 $y2 $z1) // 5
+    ($x3 $y3 $z0) // 6
+    ($x3 $y3 $z1) // 7
+    ($x4 $y4 $z0) // 8		
+    ($x4 $y4 $z1) // 9
+    ($x5 $y5 $z0) // 10
+    ($x5 $y5 $z1) // 11
+    ($x6 $y6 $z0) // 12
+    ($x6 $y6 $z1) // 13
+    ($x7 $y7 $z0) // 14
+    ($x7 $y7 $z1) // 15
+    ($x8 $y8 $z0) // 16	
+    ($x8 $y8 $z1) // 17
+    ($x9 $y9 $z0) // 18
+    ($x9 $y9 $z1) // 19
+    ($x10 $y10 $z0) // 20
+    ($x10 $y10 $z1) // 21
+    ($x11 $y11 $z0) // 22
+    ($x11 $y11 $z1) // 23
+    ($x12 $y12 $z0) // 24
+    ($x12 $y12 $z1) // 25
+    ($x13 $y13 $z0) // 26
+    ($x13 $y13 $z1) // 27
+    ($x14 $y14 $z0) // 28
+    ($x14 $y14 $z1) // 29
+    ($x15 $y15 $z0) // 30
+    ($x15 $y15 $z1) // 31
+
+    ($x16 $y16 $z0) // 32	
+    ($x16 $y16 $z1) // 33
+    ($x17 $y17 $z0) // 34
+    ($x17 $y17 $z1) // 35
+    ($x18 $y18 $z0) // 36
+    ($x18 $y18 $z1) // 37
+    ($x19 $y19 $z0) // 38
+    ($x19 $y19 $z1) // 39
+    ($x20 $y20 $z0) // 40
+    ($x20 $y20 $z1) // 41
+    ($x21 $y21 $z0) // 42
+    ($x21 $y21 $z1) // 43
+    ($x22 $y22 $z0) // 44
+    ($x22 $y22 $z1) // 45
+    ($x23 $y23 $z0) // 46
+    ($x23 $y23 $z1) // 47    
+    ($x24 $y24 $z0) // 48
+    ($x24 $y24 $z1) // 49
+    ($x25 $y25 $z0) // 50
+    ($x25 $y25 $z1) // 51
+    ($x26 $y26 $z0) // 52	
+    ($x26 $y26 $z1) // 53
+    ($x27 $y27 $z0) // 54
+    ($x27 $y27 $z1) // 55
+    ($x28 $y28 $z0) // 56
+    ($x28 $y28 $z1) // 57
+    ($x29 $y29 $z0) // 58
+    ($x29 $y29 $z1) // 59
+    ($x30 $y30 $z0) // 60
+    ($x30 $y30 $z1) // 61
+    ($x31 $y31 $z0) // 62
+    ($x31 $y31 $z1) // 63
+
+    ($x32 $y32 $z0) // 64
+    ($x32 $y32 $z1) // 65
+    ($x33 $y33 $z0) // 66
+    ($x33 $y33 $z1) // 67
+    ($x34 $y34 $z0) // 68	
+    ($x34 $y34 $z1) // 69
+    ($x35 $y35 $z0) // 70
+    ($x35 $y35 $z1) // 71
+    ($x36 $y36 $z0) // 72
+    ($x36 $y36 $z1) // 73
+    ($x37 $y37 $z0) // 74
+    ($x37 $y37 $z1) // 75
+    ($x38 $y38 $z0) // 76	
+    ($x38 $y38 $z1) // 77
+    ($x39 $y39 $z0) // 78
+    ($x39 $y39 $z1) // 79
+    ($x40 $y40 $z0) // 80
+    ($x40 $y40 $z1) // 81
+    ($x41 $y41 $z0) // 82
+    ($x41 $y41 $z1) // 83
+    ($x42 $y42 $z0) // 84	
+    ($x42 $y42 $z1) // 85
+    ($x43 $y43 $z0) // 86
+    ($x43 $y43 $z1) // 87
+    ($x44 $y44 $z0) // 88
+    ($x44 $y44 $z1) // 89
+    ($x45 $y45 $z0) // 90
+    ($x45 $y45 $z1) // 91
+    ($x46 $y46 $z0) // 92	
+    ($x46 $y46 $z1) // 93
+    ($x47 $y47 $z0) // 94
+    ($x47 $y47 $z1) // 95
+    
+    ($x48 $y48 $z0) // 96
+    ($x48 $y48 $z1) // 97
+    ($x49 $y49 $z0) // 98
+    ($x49 $y49 $z1) // 99
+    ($x50 $y50 $z0) // 100	
+    ($x50 $y50 $z1) // 101
+    ($x51 $y51 $z0) // 102
+    ($x51 $y51 $z1) // 103
+    ($x52 $y52 $z0) // 104
+    ($x52 $y52 $z1) // 105
+    ($x53 $y53 $z0) // 106
+    ($x53 $y53 $z1) // 107
+    ($x54 $y54 $z0) // 108
+    ($x54 $y54 $z1) // 109
+    ($x55 $y55 $z0) // 110
+    ($x55 $y55 $z1) // 111
+    ($x56 $y56 $z0) // 112
+    ($x56 $y56 $z1) // 113
+    ($x57 $y57 $z0) // 114
+    ($x57 $y57 $z1) // 115
+    ($x58 $y58 $z0) // 116
+    ($x58 $y58 $z1) // 117
+    ($x59 $y59 $z0) // 118
+    ($x59 $y59 $z1) // 119
+    ($x60 $y60 $z0) // 120
+    ($x60 $y60 $z1) // 121
+    ($x61 $y61 $z0) // 122
+    ($x61 $y61 $z1) // 123
+    ($x62 $y62 $z0) // 124
+    ($x62 $y62 $z1) // 125
+    ($x63 $y63 $z0) // 126
+    ($x63 $y63 $z1) // 127
+    
+    ($x64 $y64 $z0) // 96
+    ($x64 $y64 $z1) // 97
+    ($x65 $y65 $z0) // 98
+    ($x65 $y65 $z1) // 99
+    ($x66 $y66 $z0) // 100	
+    ($x66 $y66 $z1) // 101
+    ($x67 $y67 $z0) // 102
+    ($x67 $y67 $z1) // 103
+    ($x68 $y68 $z0) // 104
+    ($x68 $y68 $z1) // 105
+    ($x69 $y69 $z0) // 106
+    ($x69 $y69 $z1) // 107
+    ($x70 $y70 $z0) // 108
+    ($x70 $y70 $z1) // 109
+    ($x71 $y71 $z0) // 110
+    ($x71 $y71 $z1) // 111
+    ($x72 $y72 $z0) // 112
+    ($x72 $y72 $z1) // 113
+    ($x73 $y73 $z0) // 114
+    ($x73 $y73 $z1) // 115
+    ($x74 $y74 $z0) // 116
+    ($x74 $y74 $z1) // 117
+    ($x75 $y75 $z0) // 118
+    ($x75 $y75 $z1) // 119
+    ($x76 $y76 $z0) // 120
+    ($x76 $y76 $z1) // 121
+    ($x77 $y77 $z0) // 122
+    ($x77 $y77 $z1) // 123
+    ($x78 $y78 $z0) // 124
+    ($x78 $y78 $z1) // 125
+    ($x79 $y79 $z0) // 126
+    ($x79 $y79 $z1) // 127
+    
+    ($x80 $y80 $z0) // 96
+    ($x80 $y80 $z1) // 97
+    ($x81 $y81 $z0) // 98
+    ($x81 $y81 $z1) // 99
+    ($x82 $y82 $z0) // 100	
+    ($x82 $y82 $z1) // 101
+    ($x83 $y83 $z0) // 102
+    ($x83 $y83 $z1) // 103
+    ($x84 $y84 $z0) // 104
+    ($x84 $y84 $z1) // 105
+    ($x85 $y85 $z0) // 106
+    ($x85 $y85 $z1) // 107
+    ($x86 $y86 $z0) // 108
+    ($x86 $y86 $z1) // 109
+    ($x87 $y87 $z0) // 110
+    ($x87 $y87 $z1) // 111
+    ($x88 $y88 $z0) // 112
+    ($x88 $y88 $z1) // 113
+    ($x89 $y89 $z0) // 114
+    ($x89 $y89 $z1) // 115
+    ($x90 $y90 $z0) // 116
+    ($x90 $y90 $z1) // 117
+    ($x91 $y91 $z0) // 118
+    ($x91 $y91 $z1) // 119
+    ($x92 $y92 $z0) // 120
+    ($x92 $y92 $z1) // 121
+    ($x93 $y93 $z0) // 122
+    ($x93 $y93 $z1) // 123
+    ($x94 $y94 $z0) // 124
+    ($x94 $y94 $z1) // 125
+    ($x95 $y95 $z0) // 126
+    ($x95 $y95 $z1) // 127
+    
+);
+
+// along blades: N=19 L=25 a=10
+// between blades: N=16
+
+
+blocks
+(
+    hex (0  8  10 2  1  9  11 3 )     movingZone ($N1 $N4 1) simpleGrading (1 1 1) //
+    hex (8  16 18 10 9  17 19 11)     movingZone ($N2 $N4 1) simpleGrading (1 1 1) //
+    hex (16 24 26 18 17 25 27 19)     movingZone ($N3 $N4 1) simpleGrading (1 1 1) //
+    hex (18 26 28 20 19 27 29 21)     movingZone ($N3 $N5 1) simpleGrading (1 1 1) //
+    hex (4  12 14 6  5  13 15 7 )     movingZone ($N1 $N4 1) simpleGrading (1 1 1) //
+    hex (12 20 22 14 13 21 23 15)     movingZone ($N2 $N4 1) simpleGrading (1 1 1) //
+    hex (20 28 30 22 21 29 31 23)     movingZone ($N3 $N4 1) simpleGrading (1 1 1) //
+    
+    hex (6  14 40 32 7  15 41 33)     movingZone ($N1 $N6 1) simpleGrading (1 1 1) //
+    
+    hex (32 40 42 34 33 41 43 35)     movingZone ($N1 $N4 1) simpleGrading (1 1 1) //
+    hex (40 48 50 42 41 49 51 43)     movingZone ($N2 $N4 1) simpleGrading (1 1 1) //
+    hex (48 56 58 50 49 57 59 51)     movingZone ($N3 $N4 1) simpleGrading (1 1 1) //
+    hex (50 58 60 52 51 59 61 53)     movingZone ($N3 $N5 1) simpleGrading (1 1 1) //
+    hex (36 44 46 38 37 45 47 39)     movingZone ($N1 $N4 1) simpleGrading (1 1 1) //
+    hex (44 52 54 46 45 53 55 47)     movingZone ($N2 $N4 1) simpleGrading (1 1 1) //
+    hex (52 60 62 54 53 61 63 55)     movingZone ($N3 $N4 1) simpleGrading (1 1 1) //
+    
+    hex (38 46 72 64 39 47 73 65)     movingZone ($N1 $N6 1) simpleGrading (1 1 1) //
+    
+    hex (64 72 74 66 65 73 75 67)     movingZone ($N1 $N4 1) simpleGrading (1 1 1) //
+    hex (72 80 82 74 73 81 83 75)     movingZone ($N2 $N4 1) simpleGrading (1 1 1) //
+    hex (80 88 90 82 81 89 91 83)     movingZone ($N3 $N4 1) simpleGrading (1 1 1) //
+    hex (82 90 92 84 83 91 93 85)     movingZone ($N3 $N5 1) simpleGrading (1 1 1) //
+    hex (68 76 78 70 69 77 79 71)     movingZone ($N1 $N4 1) simpleGrading (1 1 1) //
+    hex (76 84 86 78 77 85 87 79)     movingZone ($N2 $N4 1) simpleGrading (1 1 1) //
+    hex (84 92 94 86 85 93 95 87)     movingZone ($N3 $N4 1) simpleGrading (1 1 1) //
+    
+    hex (70  78  104 96  71  79  105 97 )     movingZone ($N1 $N6 1) simpleGrading (1 1 1) //
+    
+    hex (96  104 106 98  97  105 107 99 )     movingZone ($N1 $N4 1) simpleGrading (1 1 1) //
+    hex (104 112 114 106 105 113 115 107)     movingZone ($N2 $N4 1) simpleGrading (1 1 1) //
+    hex (112 120 122 114 113 121 123 115)     movingZone ($N3 $N4 1) simpleGrading (1 1 1) //
+    hex (114 122 124 116 115 123 125 117)     movingZone ($N3 $N5 1) simpleGrading (1 1 1) //
+    hex (100 108 110 102 101 109 111 103)     movingZone ($N1 $N4 1) simpleGrading (1 1 1) //
+    hex (108 116 118 110 109 117 119 111)     movingZone ($N2 $N4 1) simpleGrading (1 1 1) //
+    hex (116 124 126 118 117 125 127 119)     movingZone ($N3 $N4 1) simpleGrading (1 1 1) //
+    
+    hex (102 110 136 128 103 111 137 129)     movingZone ($N1 $N6 1) simpleGrading (1 1 1) //
+    
+    hex (128 136 138 130 129 137 139 131)     movingZone ($N1 $N4 1) simpleGrading (1 1 1) //
+    hex (136 144 146 138 137 145 147 139)     movingZone ($N2 $N4 1) simpleGrading (1 1 1) //
+    hex (144 152 154 146 145 153 155 147)     movingZone ($N3 $N4 1) simpleGrading (1 1 1) //
+    hex (146 154 156 148 147 155 157 149)     movingZone ($N3 $N5 1) simpleGrading (1 1 1) //
+    hex (132 140 142 134 133 141 143 135)     movingZone ($N1 $N4 1) simpleGrading (1 1 1) //
+    hex (140 148 150 142 141 149 151 143)     movingZone ($N2 $N4 1) simpleGrading (1 1 1) //
+    hex (148 156 158 150 149 157 159 151)     movingZone ($N3 $N4 1) simpleGrading (1 1 1) //
+    
+    hex (134 142 168 160 135 143 169 161)     movingZone ($N1 $N6 1) simpleGrading (1 1 1) //
+    
+    hex (160 168 170 162 161 169 171 163)     movingZone ($N1 $N4 1) simpleGrading (1 1 1) //
+    hex (168 176 178 170 169 177 179 171)     movingZone ($N2 $N4 1) simpleGrading (1 1 1) //
+    hex (176 184 186 178 177 185 187 179)     movingZone ($N3 $N4 1) simpleGrading (1 1 1) //
+    hex (178 186 188 180 179 187 189 181)     movingZone ($N3 $N5 1) simpleGrading (1 1 1) //
+    hex (164 172 174 166 165 173 175 167)     movingZone ($N1 $N4 1) simpleGrading (1 1 1) //
+    hex (172 180 182 174 173 181 183 175)     movingZone ($N2 $N4 1) simpleGrading (1 1 1) //
+    hex (180 188 190 182 181 189 191 183)     movingZone ($N3 $N4 1) simpleGrading (1 1 1) //
+    
+    hex (166 174 8   0   167 175 9   1  )     movingZone ($N1 $N6 1) simpleGrading (1 1 1) //
+
+);
+
+
+edges
+(
+    arc 0   2   origin (0 0 $z0)
+    arc 4   6   origin (0 0 $z0)
+    arc 6   32  origin (0 0 $z0)
+    arc 32  34  origin (0 0 $z0)
+    arc 36  38  origin (0 0 $z0)
+    arc 38  64  origin (0 0 $z0)
+    arc 64  66  origin (0 0 $z0)
+    arc 68  70  origin (0 0 $z0)
+    arc 70  96  origin (0 0 $z0)
+    arc 96  98  origin (0 0 $z0)
+    arc 100 102 origin (0 0 $z0)
+    arc 102 128 origin (0 0 $z0)
+    arc 128 130 origin (0 0 $z0)
+    arc 132 134 origin (0 0 $z0)
+    arc 134 160 origin (0 0 $z0)
+    arc 160 162 origin (0 0 $z0)
+    arc 164 166 origin (0 0 $z0)
+    arc 166 0   origin (0 0 $z0)
+    
+    arc 1   3   origin (0 0 $z1)
+    arc 5   7   origin (0 0 $z1)
+    arc 7   33  origin (0 0 $z1)
+    arc 33  35  origin (0 0 $z1)
+    arc 37  39  origin (0 0 $z1)
+    arc 39  65  origin (0 0 $z1)
+    arc 65  67  origin (0 0 $z1)
+    arc 69  71  origin (0 0 $z1)
+    arc 71  97  origin (0 0 $z1)
+    arc 97  99  origin (0 0 $z1)
+    arc 101 103 origin (0 0 $z1)
+    arc 103 129 origin (0 0 $z1)
+    arc 129 131 origin (0 0 $z1)
+    arc 133 135 origin (0 0 $z1)
+    arc 135 161 origin (0 0 $z1)
+    arc 161 163 origin (0 0 $z1)
+    arc 165 167 origin (0 0 $z1)
+    arc 167 1   origin (0 0 $z1)
+
+);
+
+defaultPatch
+{
+    name frontAndBack;
+    type empty;
+}
+
+
+boundary
+(
+    oversetFaces
+    {
+        type overset;
+        faces
+        (
+            (8 16 17 9)(16 24 25 17)(24 26 27 25)(26 28 29 27)(28 30 31 29)(30 22 23 31)(22 14 15 23)
+            (14 40 41 15)
+            (40 48 49 41)(48 56 57 49)(56 58 59 57)(58 60 61 59)(60 62 63 61)(62 54 55 63)(54 46 47 55)
+            (46 72 73 47)
+            (72 80 81 73)(80 88 89 81)(88 90 91 89)(90 92 93 91)(92 94 95 93)(94 86 87 95)(86 78 79 87)
+            (78 104 105 79)
+            (104 112 113 105)(112 120 121 113)(120 122 123 121)(122 124 125 123)(124 126 127 125)(126 118 119 127)(118 110 111 119)
+            (110 136 137 111)
+            (136 144 145 137)(144 152 153 145)(152 154 155 153)(154 156 157 155)(156 158 159 157)(158 150 151 159)(150 142 143 151)
+            (142 168 169 143)
+            (168 176 177 169)(176 184 185 177)(184 186 187 185)(186 188 189 187)(188 190 191 189)(190 182 183 191)(182 174 175 183)
+            (174 8 9 175)
+            
+            
+        );
+    }
+    
+    hole
+    {
+        type wall;
+        faces
+        (
+            (2 0 1 3)(10 2 3 11)(18 10 11 19)(20 18 19 21)(12 20 21 13)(4 12 13 5)(6 4 5 7)
+            (32 6 7 33)
+            (34 32 33 35)(42 34 35 43)(50 42 43 51)(52 50 51 53)(44 52 53 45)(36 44 45 37)(38 36 37 39)
+            (64 38 39 65)
+            (66 64 65 67)(74 66 67 75)(82 74 75 83)(84 82 83 85)(76 84 85 77)(68 76 77 69)(70 68 69 71)
+            (96 70 71 97)
+            (98 96 97 99)(106 98 99 107)(114 106 107 115)(116 114 115 117)(108 116 117 109)(100 108 109 101)(102 100 101 103)
+            (128 102 103 129)
+            (130 128 129 131)(138 130 131 139)(146 138 139 147)(148 146 147 149)(140 148 149 141)(132 140 141 133)(134 132 133 135)
+            (160 134 135 161)
+            (162 160 161 163)(170 162 163 171)(178 170 171 179)(180 178 179 181)(172 180 181 173)(164 172 173 165)(166 164 165 167)
+            (0 166 167 1)
+        );
+    }
+
+);
+
+
+// ************************************************************************* //

@@ -1,0 +1,22 @@
+// DIMENSIONS
+dim_r0	0.050; // radius of impeller
+dim_r1	0.150; // radius of tank
+
+// NUMBER OF CELLS AND GRADING
+Nbet	11;	// between blades
+Nblade	13;	// along blades
+Ntip	1;	// blade tips
+Nos	18;	// outer blocks, same than concentric cylinders 
+
+iGrad1	1;
+iGrad2  1;
+iGrad3  ((15 0.2222 3)(70 0.5556 1)(15 0.2222 0.3333));
+
+// MATERIAL PROPERTIES
+data_rho 1000; // density
+data_nu	 1e-6; // kinematic viscosity
+
+// ANGULAR FREQUENCY
+
+data_omega 0.0628;
+

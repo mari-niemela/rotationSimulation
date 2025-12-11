@@ -1,0 +1,14 @@
+#!/bin/sh
+cd "${0%/*}" || exit                                # Run from this directory
+. ${WM_PROJECT_DIR:?}/bin/tools/RunFunctions        # Tutorial run functions
+#------------------------------------------------------------------------------
+
+runApplication blockMesh
+restore0Dir
+runApplication checkMesh 
+runApplication $(getApplication)
+postProcess -func plotOverLine_line1 -latestTime
+postProcess -func plotOverLine_line2 -latestTime
+#./plot
+
+#------------------------------------------------------------------------------

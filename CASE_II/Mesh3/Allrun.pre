@@ -1,0 +1,46 @@
+#!/bin/sh
+cd "${0%/*}" || exit                                # Run from this directory
+. ${WM_PROJECT_DIR:?}/bin/tools/RunFunctions        # Tutorial run functions
+#------------------------------------------------------------------------------
+
+# IMPELLER: create folder and mesh
+mkdir impeller
+mkdir impeller/system
+cp system/blockMeshDict_impeller impeller/system/blockMeshDict
+cp system/controlDict impeller/system
+cp system/parameters impeller/system
+cp system/divergence impeller/system
+
+cd impeller
+blockMesh > ../log.impellerMesh
+cd ..
+
+# TANK: create folder and mesh
+mkdir tank
+mkdir tank/system
+cp system/blockMeshDict_tank tank/system/blockMeshDict
+cp system/controlDict tank/system
+cp system/parameters tank/system
+cp system/divergence tank/system
+
+cd tank
+blockMesh > ../log.tankMesh
+cd ..
+
+# merge meshes
+cp -rv impeller/constant/polyMesh constant
+mergeMeshes . tank/ -overwrite > log.mergeMeshes
+
+# 0 directory
+restore0Dir
+
+# create cell sets
+topoSet > log.topoSet
+
+# define zoneID
+setFields > log.setFields
+
+# check mesh
+checkMesh > log.meshCheck
+
+#------------------------------------------------------------------------------

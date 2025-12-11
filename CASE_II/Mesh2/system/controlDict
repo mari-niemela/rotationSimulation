@@ -1,0 +1,115 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2306                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+libs            (overset fvMotionSolvers); // needed for using overset solvers
+
+application     overPimpleDyMFoam;
+
+startFrom       latestTime;
+
+startTime       0;
+
+stopAt          endTime;
+
+endTime         4000;
+
+deltaT          0.1;
+
+writeControl    adjustableRunTime;
+writeInterval   5;
+
+purgeWrite      0;
+
+writeFormat     ascii;
+
+writePrecision  10;
+
+writeCompression off;
+
+timeFormat      general;
+
+timePrecision   8;
+
+runTimeModifiable true;
+
+adjustTimeStep  yes;
+
+maxCo           0.5;
+
+# include "parameters"
+
+functions
+{
+
+	#includeFunc divergence
+   
+    forces
+    {
+    	type          forces;
+	libs          (forces);
+
+	writeControl  runTime; 
+	writeInterval 5;    
+	log           false;
+
+	patches       (hole);
+	p	      p;
+	U	      U;
+	rho           rhoInf;
+	rhoInf        $data_rho;
+	    
+	porosity      no;
+
+	CofR          (0 0 0);
+	pitchAxis     (0 0 1);
+    }
+    
+    coordinateTransform
+    {
+        type            fieldCoordinateSystemTransform;
+        libs            (fieldFunctionObjects);
+        log		true;
+        writeControl    writeTime;
+
+        fields          (U);
+        
+		coordinateSystem
+        {
+            type    	cylindrical;
+            origin      (0 0 0);
+            rotation
+            {
+            		type cylindrical;
+            		axis (0 0 1);
+       
+
+            }
+        }
+    }
+
+
+}
+
+
+
+/*
+DebugSwitches		// print detailed information about the interpolation in overset meshes
+{
+	overset 1;
+}
+*/
+
+// ************************************************************************* //

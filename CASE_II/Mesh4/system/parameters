@@ -1,0 +1,33 @@
+// DIMENSIONS
+dim_T	0.300; // tank diameter
+dim_D	0.100; // impeller diameter = dim_T/3
+dim_OS	0.160; // overset diameter
+
+dim_H   0.175; // high of the middle square in tank
+
+// IMPELLER
+Nbet	16;	// between blades
+Nblade	19;	// along blades
+Ntip	1;	// blade tips
+Nos	9;	// overset mesh
+
+// TANK
+Nsquare	50;
+Ntank1	14; 
+
+// interpolation after grading: holeLayers = 0.4444*13 = 6
+
+// GRADING
+iGrad1	1;
+iGrad2  1;
+iGrad3  ((0.015 6 3)(0.015 3 1 ));
+
+tGrad1  ((5 2 1)(20 12 0.3333));
+
+
+// OMEGA
+U_rad	0.0628;	
+
+// MATERIAL PROPERTIES
+data_rho 1000; // density
+data_nu	 1e-6; // kinematic viscosity

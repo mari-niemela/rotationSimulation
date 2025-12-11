@@ -1,0 +1,41 @@
+#!/bin/sh
+cd "${0%/*}" || exit                                # Run from this directory
+. ${WM_PROJECT_DIR:?}/bin/tools/RunFunctions        # Tutorial run functions
+#------------------------------------------------------------------------------
+
+# SETUP
+./Allrun.pre
+
+# SERIAL
+overPimpleDyMFoam > log.overPimpleDyMFoam
+
+# PARALLEL
+# runApplication decomposePar -cellDist
+# runParallel $(getApplication)
+# runApplication reconstructPar
+
+# postprocessing
+topoSet -dict system/topoSetDict_BG
+subsetMesh BG_active -resultTime 4001
+postProcess -func plotOverLine_line1 -latestTime
+mv postProcessing/plotOverLine_line1/4001/line_U.xy postProcessing/plotOverLine_line1/4001/background.xy
+rm -r 4001
+
+topoSet -dict system/topoSetDict_OS
+subsetMesh OS_active -resultTime 4001
+postProcess -func plotOverLine_line1 -latestTime
+mv postProcessing/plotOverLine_line1/4001/line_U.xy postProcessing/plotOverLine_line1/4001/overset.xy
+rm -r 4001
+
+topoSet -dict system/topoSetDict_BG
+subsetMesh BG_active -resultTime 4001
+postProcess -func plotOverLine_line2 -latestTime
+mv postProcessing/plotOverLine_line2/4001/line_U.xy postProcessing/plotOverLine_line2/4001/background.xy
+rm -r 4001
+
+topoSet -dict system/topoSetDict_OS
+subsetMesh OS_active -resultTime 4001
+postProcess -func plotOverLine_line2 -latestTime
+mv postProcessing/plotOverLine_line2/4001/line_U.xy postProcessing/plotOverLine_line2/4001/overset.xy
+rm -r 4001
+#------------------------------------------------------------------------------

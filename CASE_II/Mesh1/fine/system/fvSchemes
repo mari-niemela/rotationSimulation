@@ -1,0 +1,71 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2306                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      fvSchemes;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+ddtSchemes
+{
+    default         backward;   
+}
+
+gradSchemes
+{
+    default         Gauss linear;
+}
+
+divSchemes
+{
+    default         none;
+    div(phi,U)      Gauss linear;
+    
+    div(U)	    Gauss linear;  // to calculated divergence
+    
+    div((nuEff*dev2(T(grad(U))))) Gauss linear;
+    
+}
+
+laplacianSchemes
+{
+    default         Gauss linear corrected;
+    laplacian(diffusivity,cellDisplacement)  Gauss linear corrected;
+}
+
+interpolationSchemes
+{
+    default         linear;
+}
+
+snGradSchemes
+{
+    default         corrected;
+}
+
+oversetInterpolation
+{
+    method              inverseDistance;
+    
+    holeLayers          8;
+    useLayer		7;
+
+}
+
+fluxRequired
+{
+    default         no;
+    pcorr           ;
+    p               ;
+}
+
+
+// ************************************************************************* //
