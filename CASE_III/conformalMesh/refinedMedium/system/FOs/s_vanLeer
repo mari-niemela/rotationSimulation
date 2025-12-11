@@ -1,0 +1,124 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2306                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+
+
+    fieldName	s_vanLeer;
+    total	s_vanLeer_total;
+    bg		s_vanLeer_bg;
+    imp1	s_vanLeer_imp1;
+    imp2	s_vanLeer_imp2;
+    minMax	s_vanLeer_minMax;
+
+    $fieldName
+    {
+        type            scalarTransport;
+        libs            (solverFunctionObjects);
+
+        field           $fieldName;
+        resetOnStartUp  no;
+        D		0.0;   // diffusivity
+        nut		none;  // Name of field to use as diffusivity, default = 'none'
+        
+        nCorr		2;
+        
+        executeControl  timeStep;
+        executeInterval 1;
+        writeControl    writeTime;
+    }
+    
+    $total
+    {
+    	type            volFieldValue;
+        libs            (fieldFunctionObjects);
+
+        executeControl  timeStep;
+        executeInterval 1;
+        writeControl    timeStep;
+        writeInterval   5;
+        writeFields	false;
+        log             false;
+
+        operation       volIntegrate;
+        fields		($fieldName); 
+        
+        regionType	all;	
+    }
+    
+    $bg
+    {
+    	type            volFieldValue;
+        libs            (fieldFunctionObjects);
+
+        executeControl  timeStep;
+        executeInterval 1;
+        writeControl    timeStep;
+        writeInterval   5;
+        writeFields	false;
+        log             false;
+
+        operation       volIntegrate;
+        fields		($fieldName); 
+        
+        regionType	cellZone;	
+        name		fluid;
+    }
+    
+    $imp1
+    {
+    	type            volFieldValue;
+        libs            (fieldFunctionObjects);
+
+        executeControl  timeStep;
+        executeInterval 1;
+        writeControl    timeStep;
+        writeInterval   5;
+        writeFields	false;
+        log             false;
+
+        operation       volIntegrate;
+        fields		($fieldName); 
+        
+        regionType	cellZone;	
+        name		movingZone1;	
+    }
+    
+    $imp2
+    {
+    	type            volFieldValue;
+        libs            (fieldFunctionObjects);
+
+        executeControl  timeStep;
+        executeInterval 1;
+        writeControl    timeStep;
+        writeInterval   5;
+        writeFields	false;
+        log             false;
+
+        operation       volIntegrate;
+        fields		($fieldName); 
+        
+        regionType	cellZone;	
+        name		movingZone2;	
+    }
+    
+    $minMax
+    {
+        type            fieldMinMax;
+        libs            (fieldFunctionObjects);
+        fields          ($fieldName);
+       
+        writeControl    timeStep;
+        writeInterval   5;
+        writeFields	false;
+        log             false;
+        
+        regionType	all;
+    }
+    
+
+// ************************************************************************* //

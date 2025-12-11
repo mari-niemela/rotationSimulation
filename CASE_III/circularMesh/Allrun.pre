@@ -1,0 +1,59 @@
+#!/bin/sh
+cd "${0%/*}" || exit                                # Run from this directory
+. ${WM_PROJECT_DIR:?}/bin/tools/RunFunctions        # Tutorial run functions
+#------------------------------------------------------------------------------
+
+# IMPELLER 1: create folder and mesh
+mkdir impeller1
+mkdir impeller1/system
+cp system/controlDict impeller1/system
+cp system/parameters impeller1/system
+cp system/divergence impeller1/system
+cp system/blockMeshDict_impeller impeller1/system/blockMeshDict
+sed -i 's/movingZone/movingZone1/g' impeller1/system/blockMeshDict
+sed -i 's/hole/hole_impeller1/g' impeller1/system/blockMeshDict
+sed -i 's/oversetFaces/oversetFaces_impeller1/g' impeller1/system/blockMeshDict
+
+cd impeller1
+blockMesh > ../log.meshImpeller1
+transformPoints -translate '(0.04375 0 0)' > ../log.transImpeller1
+cd ..
+
+# IMPELLER 2: create folder and mesh
+mkdir impeller2
+mkdir impeller2/system
+cp system/controlDict impeller2/system
+cp system/parameters impeller2/system
+cp system/divergence impeller2/system
+cp system/blockMeshDict_impeller impeller2/system/blockMeshDict
+sed -i 's/movingZone/movingZone2/g' impeller2/system/blockMeshDict
+sed -i 's/hole/hole_impeller2/g' impeller2/system/blockMeshDict
+sed -i 's/oversetFaces/oversetFaces_impeller2/g' impeller2/system/blockMeshDict
+
+cd impeller2
+blockMesh > ../log.meshImpeller2
+transformPoints -rotate-z 30 > ../log.rotateImpeller2
+transformPoints -translate '(-0.04375 0 0)' > ../log.transImpeller2
+cd ..
+
+# TANK: mesh
+blockMesh -dict system/blockMeshDict_tank > log.tankMesh
+
+# merge meshes
+mergeMeshes . impeller1 -overwrite > log.mergeMeshes1
+mergeMeshes . impeller2 -overwrite > log.mergeMeshes2
+
+# check mesh
+checkMesh > log.checkMesh
+
+# 0 directory
+cp -r 0.orig/ 0
+
+# set fields
+setFields > log.setFields
+
+# clean
+rm -r impeller1
+rm -r impeller2
+
+#------------------------------------------------------------------------------

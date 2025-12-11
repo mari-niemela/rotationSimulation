@@ -1,0 +1,51 @@
+// TANK
+T	0.300;  // tank diameter
+L	0.0875; // distance between impellers
+H	0.175;  // height of the middle part
+a	0.04375;
+b      	0.200;
+alpha	45;
+
+tN1  122;
+tN2  70;
+tN3  54;
+tN4  35;
+
+tGrad1      1;
+tGrad2      1;
+tGrad2_inv  1;
+tGrad3      1;
+tGrad4      ((0.030 15 1)(0.020 14 0.45)); 
+
+// IMPELLER
+dim_T	0.300; // tank diameter
+dim_D	0.100; // impeller diameter = dim_T/3
+dim_OS	0.160; // overset diameter
+gap 	0.008;
+top	0.005;
+
+iN1  7;	
+iN2  16;
+iN3  5;
+iN4  5;
+iN5  1;
+iN6  10;
+
+// OMEGA
+
+U_rad		table ((0     0)
+    		       (10    0.0628)
+    	       	       (50000 0.0628));
+
+U_rad_neg	table ((0     0)
+    	               (10    -0.0628)
+    	               (50000 -0.0628));
+
+
+// center on axis
+CofR1	(0.04375 0 0);  //  L/2
+CofR2	(-0.04375 0 0);	// -L/2
+
+// MATERIAL PROPERTIES
+data_rho 1000; // density
+data_nu	 1e-6; // kinematic viscosity

@@ -1,0 +1,56 @@
+#!/bin/sh
+cd "${0%/*}" || exit                                # Run from this directory
+. ${WM_PROJECT_DIR:?}/bin/tools/RunFunctions        # Tutorial run functions
+#------------------------------------------------------------------------------
+
+# SETUP
+./Allrun.pre
+
+# SERIAL
+overPimpleDyMFoam > log.overPimpleDyMFoam
+
+# PARALLEL
+# runApplication decomposePar -cellDist
+# runParallel $(getApplication)
+# runApplication reconstructPar
+
+# POSTPROCESSING
+
+# horizontal line
+topoSet -dict system/topoSetDict_BG
+subsetMesh BG_active -resultTime 4001
+postProcess -func plotOverLine_horizontal -latestTime
+mv postProcessing/plotOverLine_horizontal/4001/line_cellTypes_U.xy postProcessing/plotOverLine_horizontal/4001/background.xy
+rm -r 4001
+
+topoSet -dict system/topoSetDict_OS1
+subsetMesh OS1_active -resultTime 4001
+postProcess -func plotOverLine_horizontal -latestTime
+mv postProcessing/plotOverLine_horizontal/4001/line_cellTypes_U.xy postProcessing/plotOverLine_horizontal/4001/overset1.xy
+rm -r 4001
+
+topoSet -dict system/topoSetDict_OS2
+subsetMesh OS2_active -resultTime 4001
+postProcess -func plotOverLine_horizontal -latestTime
+mv postProcessing/plotOverLine_horizontal/4001/line_cellTypes_U.xy postProcessing/plotOverLine_horizontal/4001/overset2.xy
+rm -r 4001
+
+# vertical line
+topoSet -dict system/topoSetDict_BG
+subsetMesh BG_active -resultTime 4001
+postProcess -func plotOverLine_vertical -latestTime
+mv postProcessing/plotOverLine_vertical/4001/line_cellTypes_U.xy postProcessing/plotOverLine_vertical/4001/background.xy
+rm -r 4001
+
+topoSet -dict system/topoSetDict_OS1
+subsetMesh OS1_active -resultTime 4001
+postProcess -func plotOverLine_vertical -latestTime
+mv postProcessing/plotOverLine_vertical/4001/line_cellTypes_U.xy postProcessing/plotOverLine_vertical/4001/overset1.xy
+rm -r 4001
+
+topoSet -dict system/topoSetDict_OS2
+subsetMesh OS2_active -resultTime 4001
+postProcess -func plotOverLine_vertical -latestTime
+mv postProcessing/plotOverLine_vertical/4001/line_cellTypes_U.xy postProcessing/plotOverLine_vertical/4001/overset2.xy
+rm -r 4001
+#------------------------------------------------------------------------------

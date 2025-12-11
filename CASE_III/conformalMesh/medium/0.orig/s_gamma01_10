@@ -1,0 +1,80 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.0.1                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    object      s;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 0 0 0 0 0 0];
+
+//internalField   uniform 0;
+
+internalField   #codeStream
+{
+    codeInclude
+    #{
+        #include "fvCFD.H"
+    #};
+
+    codeOptions
+    #{
+        -I$(LIB_SRC)/finiteVolume/lnInclude \
+        -I$(LIB_SRC)/meshTools/lnInclude
+    #};
+
+    //libs needed to visualize BC in paraview
+    codeLibs
+    #{
+        -lmeshTools \
+	-lfiniteVolume
+    #};
+
+    code
+    #{
+        const IOdictionary& d = static_cast<const IOdictionary&>(dict); // access internal mesh information
+        const fvMesh& mesh = refCast<const fvMesh>(d.db());
+        
+        scalarField s(mesh.nCells(), 0.0); 				// initialize scalar field to 0
+
+        forAll(s, i)	// access all cell centers and assign values, size of loop defined by p and iterator is i
+        {
+            const scalar x = mesh.C()[i].x(); // access coordinates of the cell center
+                        
+            s[i] = 0.5*(1+Foam::tanh(x/0.005));
+        }
+
+        s.writeEntry("",os);
+    #};
+};
+
+
+boundaryField
+{
+    #includeEtc "caseDicts/setConstraintTypes"
+   
+    walls
+    {
+        type            zeroGradient;
+    }
+    
+    "hole.*"
+    {
+        type            zeroGradient;
+    }
+    
+    "overset.*"
+    {
+        type            overset;
+    }   
+}
+
+// ************************************************************************* //

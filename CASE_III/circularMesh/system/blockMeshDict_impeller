@@ -1,0 +1,319 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2306                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+scale   1;
+
+# include "parameters"
+
+// dimensions
+
+dim_t	#eval "$dim_T/100";
+
+// parameters
+
+R1	#eval "$dim_D/2-$dim_D/4";
+R2	#eval "$dim_D/2";
+R3	#eval "$dim_OS/2";
+
+alpha1	degToRad(0);
+alpha2	degToRad(60);
+alpha3	degToRad(120);
+alpha4	degToRad(180);
+alpha5	degToRad(240);
+alpha6	degToRad(300);
+
+delta1	#eval "asin(0.5*$dim_t/$R1)";	 // inner edge of blade
+delta2	#eval "asin(0.5*$dim_t/$R2)";	 // outer edge of blade
+delta3	#eval "asin(0.5*(2*3.1415*$R3/(6*$Nbet+6*$Ntip)*$Ntip)/$R3)";  // overset edge
+
+// coordinates
+x0	#eval "$R1*cos($alpha1 - $delta1)";
+x1	#eval "$R1*cos($alpha1 + $delta1)";
+x2	#eval "$R1*cos($alpha2 - $delta1)";
+x3	#eval "$R1*cos($alpha2 + $delta1)";
+x4	#eval "$R1*cos($alpha3 - $delta1)";
+x5	#eval "$R1*cos($alpha3 + $delta1)";
+x6	#eval "$R1*cos($alpha4 - $delta1)";
+x7	#eval "$R1*cos($alpha4 + $delta1)";
+x8	#eval "$R1*cos($alpha5 - $delta1)";
+x9	#eval "$R1*cos($alpha5 + $delta1)";
+x10	#eval "$R1*cos($alpha6 - $delta1)";
+x11	#eval "$R1*cos($alpha6 + $delta1)";
+
+x12	#eval "$R2*cos($alpha1 - $delta2)";
+x13	#eval "$R2*cos($alpha1 + $delta2)";
+x14	#eval "$R2*cos($alpha2 - $delta2)";
+x15	#eval "$R2*cos($alpha2 + $delta2)";
+x16	#eval "$R2*cos($alpha3 - $delta2)";
+x17	#eval "$R2*cos($alpha3 + $delta2)";
+x18	#eval "$R2*cos($alpha4 - $delta2)";
+x19	#eval "$R2*cos($alpha4 + $delta2)";
+x20	#eval "$R2*cos($alpha5 - $delta2)";
+x21	#eval "$R2*cos($alpha5 + $delta2)";
+x22	#eval "$R2*cos($alpha6 - $delta2)";
+x23	#eval "$R2*cos($alpha6 + $delta2)";
+
+x24	#eval "$R3*cos($alpha1 - $delta3)";
+x25	#eval "$R3*cos($alpha1 + $delta3)";
+x26	#eval "$R3*cos($alpha2 - $delta3)";
+x27	#eval "$R3*cos($alpha2 + $delta3)";
+x28	#eval "$R3*cos($alpha3 - $delta3)";
+x29	#eval "$R3*cos($alpha3 + $delta3)";
+x30	#eval "$R3*cos($alpha4 - $delta3)";
+x31	#eval "$R3*cos($alpha4 + $delta3)";
+x32	#eval "$R3*cos($alpha5 - $delta3)";
+x33	#eval "$R3*cos($alpha5 + $delta3)";
+x34	#eval "$R3*cos($alpha6 - $delta3)";
+x35	#eval "$R3*cos($alpha6 + $delta3)";
+
+y0	#eval "$R1*sin($alpha1 - $delta1)";
+y1	#eval "$R1*sin($alpha1 + $delta1)";
+y2	#eval "$R1*sin($alpha2 - $delta1)";
+y3	#eval "$R1*sin($alpha2 + $delta1)";
+y4	#eval "$R1*sin($alpha3 - $delta1)";
+y5	#eval "$R1*sin($alpha3 + $delta1)";
+y6	#eval "$R1*sin($alpha4 - $delta1)";
+y7	#eval "$R1*sin($alpha4 + $delta1)";
+y8	#eval "$R1*sin($alpha5 - $delta1)";
+y9	#eval "$R1*sin($alpha5 + $delta1)";
+y10	#eval "$R1*sin($alpha6 - $delta1)";
+y11	#eval "$R1*sin($alpha6 + $delta1)";
+
+y12	#eval "$R2*sin($alpha1 - $delta2)";
+y13	#eval "$R2*sin($alpha1 + $delta2)";
+y14	#eval "$R2*sin($alpha2 - $delta2)";
+y15	#eval "$R2*sin($alpha2 + $delta2)";
+y16	#eval "$R2*sin($alpha3 - $delta2)";
+y17	#eval "$R2*sin($alpha3 + $delta2)";
+y18	#eval "$R2*sin($alpha4 - $delta2)";
+y19	#eval "$R2*sin($alpha4 + $delta2)";
+y20	#eval "$R2*sin($alpha5 - $delta2)";
+y21	#eval "$R2*sin($alpha5 + $delta2)";
+y22	#eval "$R2*sin($alpha6 - $delta2)";
+y23	#eval "$R2*sin($alpha6 + $delta2)";
+
+y24	#eval "$R3*sin($alpha1 - $delta3)";
+y25	#eval "$R3*sin($alpha1 + $delta3)";
+y26	#eval "$R3*sin($alpha2 - $delta3)";
+y27	#eval "$R3*sin($alpha2 + $delta3)";
+y28	#eval "$R3*sin($alpha3 - $delta3)";
+y29	#eval "$R3*sin($alpha3 + $delta3)";
+y30	#eval "$R3*sin($alpha4 - $delta3)";
+y31	#eval "$R3*sin($alpha4 + $delta3)";
+y32	#eval "$R3*sin($alpha5 - $delta3)";
+y33	#eval "$R3*sin($alpha5 + $delta3)";
+y34	#eval "$R3*sin($alpha6 - $delta3)";
+y35	#eval "$R3*sin($alpha6 + $delta3)";
+
+z0	-0.5;
+z1	0.5;
+
+vertices
+(
+    ($x0 $y0 $z0) // 0	middle
+    ($x0 $y0 $z1) // 1
+    ($x1 $y1 $z0) // 2
+    ($x1 $y1 $z1) // 3
+    ($x2 $y2 $z0) // 4
+    ($x2 $y2 $z1) // 5
+    ($x3 $y3 $z0) // 6
+    ($x3 $y3 $z1) // 7
+    ($x4 $y4 $z0) // 8		
+    ($x4 $y4 $z1) // 9
+    ($x5 $y5 $z0) // 10
+    ($x5 $y5 $z1) // 11
+    ($x6 $y6 $z0) // 12
+    ($x6 $y6 $z1) // 13
+    ($x7 $y7 $z0) // 14
+    ($x7 $y7 $z1) // 15
+    ($x8 $y8 $z0) // 16	
+    ($x8 $y8 $z1) // 17
+    ($x9 $y9 $z0) // 18
+    ($x9 $y9 $z1) // 19
+    ($x10 $y10 $z0) // 20
+    ($x10 $y10 $z1) // 21
+    ($x11 $y11 $z0) // 22
+    ($x11 $y11 $z1) // 23
+    
+    ($x12 $y12 $z0) // 24
+    ($x12 $y12 $z1) // 25
+    ($x13 $y13 $z0) // 26
+    ($x13 $y13 $z1) // 27
+    ($x14 $y14 $z0) // 28
+    ($x14 $y14 $z1) // 29
+    ($x15 $y15 $z0) // 30
+    ($x15 $y15 $z1) // 31
+    ($x16 $y16 $z0) // 32	
+    ($x16 $y16 $z1) // 33
+    ($x17 $y17 $z0) // 34
+    ($x17 $y17 $z1) // 35
+    ($x18 $y18 $z0) // 36
+    ($x18 $y18 $z1) // 37
+    ($x19 $y19 $z0) // 38
+    ($x19 $y19 $z1) // 39
+    ($x20 $y20 $z0) // 40
+    ($x20 $y20 $z1) // 41
+    ($x21 $y21 $z0) // 42
+    ($x21 $y21 $z1) // 43
+    ($x22 $y22 $z0) // 44
+    ($x22 $y22 $z1) // 45
+    ($x23 $y23 $z0) // 46
+    ($x23 $y23 $z1) // 47    
+    
+    ($x24 $y24 $z0) // 48
+    ($x24 $y24 $z1) // 49
+    ($x25 $y25 $z0) // 50
+    ($x25 $y25 $z1) // 51
+    ($x26 $y26 $z0) // 52	
+    ($x26 $y26 $z1) // 53
+    ($x27 $y27 $z0) // 54
+    ($x27 $y27 $z1) // 55
+    ($x28 $y28 $z0) // 56
+    ($x28 $y28 $z1) // 57
+    ($x29 $y29 $z0) // 58
+    ($x29 $y29 $z1) // 59
+    ($x30 $y30 $z0) // 60
+    ($x30 $y30 $z1) // 61
+    ($x31 $y31 $z0) // 62
+    ($x31 $y31 $z1) // 63
+    ($x32 $y32 $z0) // 64
+    ($x32 $y32 $z1) // 65
+    ($x33 $y33 $z0) // 66
+    ($x33 $y33 $z1) // 67
+    ($x34 $y34 $z0) // 68	
+    ($x34 $y34 $z1) // 69
+    ($x35 $y35 $z0) // 70
+    ($x35 $y35 $z1) // 71
+    
+);
+	
+blocks
+(
+    hex (2 26 28 4 3 27 29 5)     movingZone ($Nblade $Nbet 1) edgeGrading   ($iGrad2 $iGrad2 $iGrad2 $iGrad2 1 $iGrad1 $iGrad1 1 1 1 1 1) // 0 between blades
+    hex (6 30 32 8 7 31 33 9)     movingZone ($Nblade $Nbet 1) edgeGrading   ($iGrad2 $iGrad2 $iGrad2 $iGrad2 1 $iGrad1 $iGrad1 1 1 1 1 1) // 1
+    hex (10 34 36 12 11 35 37 13) movingZone ($Nblade $Nbet 1) edgeGrading   ($iGrad2 $iGrad2 $iGrad2 $iGrad2 1 $iGrad1 $iGrad1 1 1 1 1 1) // 2
+    hex (14 38 40 16 15 39 41 17) movingZone ($Nblade $Nbet 1) edgeGrading   ($iGrad2 $iGrad2 $iGrad2 $iGrad2 1 $iGrad1 $iGrad1 1 1 1 1 1) // 3
+    hex (18 42 44 20 19 43 45 21) movingZone ($Nblade $Nbet 1) edgeGrading   ($iGrad2 $iGrad2 $iGrad2 $iGrad2 1 $iGrad1 $iGrad1 1 1 1 1 1) // 4
+    hex (22 46 24 0 23 47 25 1)   movingZone ($Nblade $Nbet 1) edgeGrading   ($iGrad2 $iGrad2 $iGrad2 $iGrad2 1 $iGrad1 $iGrad1 1 1 1 1 1) // 5
+ 
+    hex (24 48 50 26 25 49 51 27) movingZone ($Nos $Ntip 1) simpleGrading ($iGrad3 1 1) // 6 outer blocks
+    hex (26 50 52 28 27 51 53 29) movingZone ($Nos $Nbet 1) edgeGrading   ($iGrad3 $iGrad3 $iGrad3 $iGrad3 $iGrad1 1 1 $iGrad1 1 1 1 1) // 7
+    hex (28 52 54 30 29 53 55 31) movingZone ($Nos $Ntip 1) simpleGrading ($iGrad3 1 1) 						// 8
+    hex (30 54 56 32 31 55 57 33) movingZone ($Nos $Nbet 1) edgeGrading   ($iGrad3 $iGrad3 $iGrad3 $iGrad3 $iGrad1 1 1 $iGrad1 1 1 1 1) 	// 9
+    hex (32 56 58 34 33 57 59 35) movingZone ($Nos $Ntip 1) simpleGrading ($iGrad3 1 1) 						// 10
+    hex (34 58 60 36 35 59 61 37) movingZone ($Nos $Nbet 1) edgeGrading   ($iGrad3 $iGrad3 $iGrad3 $iGrad3 $iGrad1 1 1 $iGrad1 1 1 1 1) 	// 11
+    hex (36 60 62 38 37 61 63 39) movingZone ($Nos $Ntip 1) simpleGrading ($iGrad3 1 1) 						// 12
+    hex (38 62 64 40 39 63 65 41) movingZone ($Nos $Nbet 1) edgeGrading   ($iGrad3 $iGrad3 $iGrad3 $iGrad3 $iGrad1 1 1 $iGrad1 1 1 1 1) 	// 13
+    hex (40 64 66 42 41 65 67 43) movingZone ($Nos $Ntip 1) simpleGrading ($iGrad3 1 1)						// 14
+    hex (42 66 68 44 43 67 69 45) movingZone ($Nos $Nbet 1) edgeGrading   ($iGrad3 $iGrad3 $iGrad3 $iGrad3 $iGrad1 1 1 $iGrad1 1 1 1 1)	// 15
+    hex (44 68 70 46 45 69 71 47) movingZone ($Nos $Ntip 1) simpleGrading ($iGrad3 1 1) 					// 16
+    hex (46 70 48 24 47 71 49 25) movingZone ($Nos $Nbet 1) edgeGrading   ($iGrad3 $iGrad3 $iGrad3 $iGrad3 $iGrad1 1 1 $iGrad1 1 1 1 1) 	// 17
+
+);
+
+edges
+(
+    arc 2 4   origin (0 0 $z0)
+    arc 3 5   origin (0 0 $z1)
+    arc 6 8   origin (0 0 $z0)
+    arc 7 9   origin (0 0 $z1)
+    arc 10 12 origin (0 0 $z0)
+    arc 11 13 origin (0 0 $z1)
+    arc 14 16 origin (0 0 $z0)
+    arc 15 17 origin (0 0 $z1)
+    arc 18 20 origin (0 0 $z0)
+    arc 19 21 origin (0 0 $z1)
+    arc 22 0  origin (0 0 $z0)
+    arc 23 1  origin (0 0 $z1)
+    arc 26 28 origin (0 0 $z0)
+    arc 27 29 origin (0 0 $z1)
+    arc 30 32 origin (0 0 $z0)
+    arc 31 33 origin (0 0 $z1)
+    arc 34 36 origin (0 0 $z0)
+    arc 35 37 origin (0 0 $z1)
+    arc 38 40 origin (0 0 $z0)
+    arc 39 41 origin (0 0 $z1)
+    arc 42 44 origin (0 0 $z0)
+    arc 43 45 origin (0 0 $z1)
+    arc 46 24 origin (0 0 $z0)
+    arc 47 25 origin (0 0 $z1)
+    arc 50 52 origin (0 0 $z0)
+    arc 51 53 origin (0 0 $z1)
+    arc 54 56 origin (0 0 $z0)
+    arc 55 57 origin (0 0 $z1)
+    arc 58 60 origin (0 0 $z0)
+    arc 59 61 origin (0 0 $z1)
+    arc 62 64 origin (0 0 $z0)
+    arc 63 65 origin (0 0 $z1)
+    arc 66 68 origin (0 0 $z0)
+    arc 67 69 origin (0 0 $z1)
+    arc 70 48 origin (0 0 $z0)
+    arc 71 49 origin (0 0 $z1)
+    
+    arc 48 50 origin (0 0 $z0)
+    arc 49 51 origin (0 0 $z1)
+    arc 52 54 origin (0 0 $z0)
+    arc 53 55 origin (0 0 $z1)
+    arc 56 58 origin (0 0 $z0)
+    arc 57 59 origin (0 0 $z1)
+    arc 60 62 origin (0 0 $z0)
+    arc 61 63 origin (0 0 $z1)
+    arc 64 66 origin (0 0 $z0)
+    arc 65 67 origin (0 0 $z1)
+    arc 68 70 origin (0 0 $z0)
+    arc 69 71 origin (0 0 $z1)
+   
+);
+
+defaultPatch
+{
+    name frontAndBack;
+    type empty;
+}
+
+
+boundary
+(
+
+    oversetFaces
+    {
+        type overset;
+        faces
+        (
+            (50 48 49 51)(52 50 51 53)(54 52 53 55)(56 54 55 57)
+            (58 56 57 59)(60 58 59 61)(62 60 61 63)(64 62 63 65)
+            (66 64 65 67)(68 66 67 69)(70 68 69 71)(48 70 71 49)
+        );
+    }
+    
+    hole
+    {
+        type wall;
+        faces
+        (
+            (0 24 25 1)(24 26 27 25)(26 2 3 27)(2 4 5 3)
+            (4 28 29 5)(28 30 31 29)(30 6 7 31)(6 8 9 7)
+            (8 32 33 9)(32 34 35 33)(34 10 11 35)(10 12 13 11)
+            (12 36 37 13)(36 38 39 37)(38 14 15 39)(14 16 17 15)
+            (16 40 41 17)(40 42 43 41)(42 18 19 43)(18 20 21 19)
+            (20 44 45 21)(44 46 47 45)(46 22 23 47)(22 0 1 23)
+        );
+    }
+
+);
+
+
+// ************************************************************************* //
