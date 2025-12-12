@@ -11,3 +11,8 @@ open-source software. The general observations were: 1) The simulated velocity f
 accordance with the reference cases and the passive scalar was conserved in the simulation case of
 intermeshing impellers despite the inherent mass conservation errors. 2) However, fluctuations in power
 number were detected for conformal meshes in the two impeller case.
+
+The case files are provided in the following folders:
+CASE I: concentric cylinders
+CASE II: one rotating impeller
+CASE III: two intermeshing impellers
