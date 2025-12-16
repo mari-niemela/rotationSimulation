@@ -13,6 +13,9 @@ intermeshing impellers despite the inherent mass conservation errors. 2) However
 number were detected for conformal meshes in the two impeller case.
 
 The case files are provided in the following folders:
+
 CASE I: concentric cylinders
+
 CASE II: one rotating impeller
+
 CASE III: two intermeshing impellers
